@@ -80,7 +80,7 @@ const Products = () => {
         <Container>
           <h1 className="page-title">
             <i className="fas fa-laptop me-3"></i>
-            Computer Shop
+            Products
           </h1>
           <p className="page-subtitle">Discover the latest technology and accessories</p>
         </Container>
@@ -88,6 +88,7 @@ const Products = () => {
 
       <Container className="products-container">
         {/* Filters and Search */}
+        <h1 className="search-heading">Search your Products</h1>
         <div className="filters-section">
           <Row className="g-3">
             <Col md={6} lg={4}>
@@ -139,7 +140,7 @@ const Products = () => {
         {filteredProducts.length > 0 ? (
           <Row className="products-grid">
             {filteredProducts.map((product) => (
-              <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+              <Col key={product.id} xs={12} sm={6} md={4} lg={4} xl={4} className="mb-4">
                 <Card className="product-card h-100">
                   <Link to={`/products/${product.id}`} className="product-image-link">
                     <div className="product-image-wrapper">

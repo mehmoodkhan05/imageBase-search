@@ -1,7 +1,7 @@
 {
   "name": "image-search-backend",
   "version": "1.0.0",
-  "description": "Backend API for image search using Clarifai",
+  "description": "Backend API for image search using Hugging Face",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "dev": "node --watch server.js"
   },
   "keywords": [
-    "clarifai",
+    "huggingface",
     "image-recognition",
     "api"
   ],

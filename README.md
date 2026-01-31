@@ -131,10 +131,17 @@ const rekognition = new AWS.Rekognition();
 import { ComputerVisionClient } from '@azure/cognitiveservices-computervision';
 ```
 
-### Option 4: Clarifai
+### Option 4: Hugging Face
 ```javascript
-// Use Clarifai SDK for visual recognition
-import { ClarifaiStub } from 'clarifai-nodejs-grpc';
+// Use Hugging Face Inference API for visual recognition
+const response = await fetch('https://api-inference.huggingface.co/models/google/vit-base-patch16-224', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${YOUR_API_TOKEN}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ inputs: base64Image })
+});
 ```
 
 ## Configuration

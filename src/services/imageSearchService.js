@@ -7,7 +7,7 @@
  * - Google Vision API
  * - AWS Rekognition
  * - Azure Computer Vision
- * - Clarifai
+ * - Hugging Face Inference API
  * - Custom backend API
  */
 
@@ -24,7 +24,7 @@ const BACKEND_API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:50
  * @returns {Promise<Array>} Array of product objects from the website's catalog
  */
 export const searchProductsByImage = async (imageFile) => {
-  // Clarifai API has its own response time, so we don't need artificial delay
+  // Backend API has its own response time, so we don't need artificial delay
 
   // TODO: Replace with actual image recognition API
   // For now, this searches through all products in the catalog
@@ -108,11 +108,11 @@ export const fileToArrayBuffer = (file) => {
 };
 
 /**
- * Detect category using Clarifai API
+ * Detect category using Backend API (Hugging Face)
  * @param {File} imageFile - The uploaded image file
  * @returns {Promise<string|null>} Detected category or null
  */
-const detectCategoryWithClarifai = async (imageFile) => {
+const detectCategoryWithBackend = async (imageFile) => {
   try {
     console.log('🔍 Calling backend API for image analysis...');
     
@@ -163,7 +163,7 @@ const detectCategoryWithClarifai = async (imageFile) => {
 };
 
 /**
- * Match Clarifai concepts with product categories
+ * Match detected concepts with product categories
  * @param {Array} concepts - Array of detected concept names (lowercase)
  * @returns {string|null} Matched category
  */
@@ -291,14 +291,14 @@ const analyzeImageContent = (img) => {
  * @returns {Promise<string|null>} Detected category or null
  */
 const detectCategoryFromImage = async (imageFile) => {
-  // Method 1: Try Clarifai API first (most accurate)
-  console.log('🔍 Attempting Clarifai detection...');
-  const clarifaiCategory = await detectCategoryWithClarifai(imageFile);
-  if (clarifaiCategory) {
-    return clarifaiCategory;
+  // Method 1: Try Backend API first (most accurate - uses Hugging Face)
+  console.log('🔍 Attempting backend API detection...');
+  const backendCategory = await detectCategoryWithBackend(imageFile);
+  if (backendCategory) {
+    return backendCategory;
   }
   
-  console.log('⚠️ Clarifai detection failed, trying fallback methods...');
+  console.log('⚠️ Backend API detection failed, trying fallback methods...');
   
   // Method 2: Fallback to filename detection
   const fileName = imageFile.name.toLowerCase();

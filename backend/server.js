@@ -1,13 +1,19 @@
+// IMPORTANT: Load environment variables FIRST, before any other imports
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
-import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { analyzeImageWithClarifai } from './services/clarifaiService.js';
+import { analyzeImageWithHuggingFace } from './services/huggingFaceService.js';
 
-// Load environment variables
-dotenv.config();
+// Log environment variables (for debugging - remove in production)
+console.log('🔧 Environment check:');
+console.log('  - HUGGINGFACE_API_KEY:', process.env.HUGGINGFACE_API_KEY ? '✅ Set' : '❌ Not set');
+console.log('  - HUGGINGFACE_MODEL_ID:', process.env.HUGGINGFACE_MODEL_ID || 'google/vit-base-patch16-224 (default)');
+console.log('  - PORT:', process.env.PORT || '5000 (default)');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -96,8 +102,20 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
     // Convert buffer to base64
     const base64Image = req.file.buffer.toString('base64');
 
-    // Call Clarifai API
-    const result = await analyzeImageWithClarifai(base64Image, req.file.mimetype);
+    // Call Hugging Face API
+    const result = await analyzeImageWithHuggingFace(base64Image, req.file.mimetype);
+
+    // If Hugging Face returns null, it means it failed and should use fallback
+    if (result === null) {
+      return res.json({
+        success: true,
+        data: {
+          concepts: [],
+          category: null,
+          message: 'Hugging Face API unavailable, use local detection fallback'
+        }
+      });
+    }
 
     // Return the analysis result
     res.json({
@@ -149,6 +167,6 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔑 Clarifai Model: ${process.env.CLARIFAI_MODEL_ID}`);
+  console.log(`🔑 Hugging Face Model: ${process.env.HUGGINGFACE_MODEL_ID || 'google/vit-base-patch16-224'}`);
   console.log(`✅ Health check: http://localhost:${PORT}/health`);
 });

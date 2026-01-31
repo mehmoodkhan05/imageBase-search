@@ -1,10 +1,10 @@
 # Image Search Backend API
 
-Backend server for handling Clarifai image recognition API calls. This solves CORS issues by acting as a proxy between the frontend and Clarifai API.
+Backend server for handling Hugging Face image recognition API calls. This solves CORS issues by acting as a proxy between the frontend and Hugging Face API.
 
 ## Features
 
-- ✅ Image upload and analysis using Clarifai API
+- ✅ Image upload and analysis using Hugging Face API
 - ✅ CORS enabled for frontend communication
 - ✅ File validation (type and size)
 - ✅ Error handling and logging
@@ -29,9 +29,8 @@ cp .env.example .env
 
 Edit `.env`:
 ```
-CLARIFAI_API_KEY=your_api_key_here
-CLARIFAI_USER_ID=clarifai
-CLARIFAI_MODEL_ID=general-image-recognition
+HUGGINGFACE_API_KEY=your_api_key_here
+HUGGINGFACE_MODEL_ID=google/vit-base-patch16-224
 PORT=5000
 NODE_ENV=development
 ```
@@ -88,9 +87,8 @@ Body:
 
 ## Environment Variables
 
-- `CLARIFAI_API_KEY` - Your Clarifai API key (required)
-- `CLARIFAI_USER_ID` - Clarifai user ID (default: 'clarifai')
-- `CLARIFAI_MODEL_ID` - Model ID to use (default: 'general-image-recognition')
+- `HUGGINGFACE_API_KEY` - Your Hugging Face API token (required)
+- `HUGGINGFACE_MODEL_ID` - Model ID to use (default: 'google/vit-base-patch16-224')
 - `PORT` - Server port (default: 5000)
 - `NODE_ENV` - Environment (development/production)
 - `FRONTEND_URL` - Frontend URL for CORS (default: http://localhost:3000)
